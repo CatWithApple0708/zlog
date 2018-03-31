@@ -40,18 +40,66 @@ void zlog_level_list_del(zc_arraylist_t *levels)
 	return;
 }
 
+#if 0
+#define F_BLACK                        "30;"
+#define F_RED                          "31;"
+#define F_GREEN                        "32;"
+#define F_YELLOW                       "33;"
+#define F_BLUE                         "34;"
+#define F_MAGENTA                      "35;"
+#define F_CYAN                         "36;"
+#define F_WHITE                        "37;"
+/* output log background color */
+#define B_NULL
+#define B_BLACK                        "40;"
+#define B_RED                          "41;"
+#define B_GREEN                        "42;"
+#define B_YELLOW                       "43;"
+#define B_BLUE                         "44;"
+#define B_MAGENTA                      "45;"
+#define B_CYAN                         "46;"
+#define B_WHITE                        "47;"
+/* output log fonts style */
+#define S_BOLD                         "1m"
+#define S_UNDERLINE                    "4m"
+#define S_BLINK                        "5m"
+#define S_NORMAL                       "22m"
+#endif
+
+#define RED(text) "\033[31m"text"\033[0m"
+#define YELLOW(text) "\033[33m"text"\033[0m"
+#define GREEN(text) "\033[32m"text"\033[0m"
+#define CYAN(text) "\033[36m"text"\033[0m"
+
+// #define RED(text) "..............."text"............n"
+
+#if 0
+static int zlog_level_list_set_default(zc_arraylist_t *levels)
+{
+	return zlog_level_list_set(levels, GREEN("* ")"= 0, LOG_INFO")
+	|| zlog_level_list_set(levels, GREEN("DEBUG")" = 20, LOG_DEBUG")
+	|| zlog_level_list_set(levels, CYAN("INFO")" = 40, LOG_INFO")
+	|| zlog_level_list_set(levels, YELLOW("NOTICE")" = 60, LOG_NOTICE")
+	|| zlog_level_list_set(levels, YELLOW("WARN")" = 80, LOG_WARNING")
+	|| zlog_level_list_set(levels, RED("ERROR")" = 100, LOG_ERR")
+	|| zlog_level_list_set(levels, RED("FATAL")" = 120, LOG_ALERT")
+	|| zlog_level_list_set(levels, "UNKNOWN = 254, LOG_ERR")
+	|| zlog_level_list_set(levels, "! "" = 255, LOG_INFO");
+}
+#else
 static int zlog_level_list_set_default(zc_arraylist_t *levels)
 {
 	return zlog_level_list_set(levels, "* = 0, LOG_INFO")
-	|| zlog_level_list_set(levels, "DEBUG = 20, LOG_DEBUG")
-	|| zlog_level_list_set(levels, "INFO = 40, LOG_INFO")
-	|| zlog_level_list_set(levels, "NOTICE = 60, LOG_NOTICE")
-	|| zlog_level_list_set(levels, "WARN = 80, LOG_WARNING")
-	|| zlog_level_list_set(levels, "ERROR = 100, LOG_ERR")
-	|| zlog_level_list_set(levels, "FATAL = 120, LOG_ALERT")
+	|| zlog_level_list_set(levels, GREEN("DEBU")" = 20, LOG_DEBUG")
+	|| zlog_level_list_set(levels, CYAN("INFO")" = 40, LOG_INFO")	
+	|| zlog_level_list_set(levels, YELLOW("NOTI")" = 60, LOG_NOTICE")
+	|| zlog_level_list_set(levels, YELLOW("WARN")" = 80, LOG_WARNING")
+	|| zlog_level_list_set(levels, RED("ERRO")" = 100, LOG_ERR")
+	|| zlog_level_list_set(levels, RED("FATA")" = 120, LOG_ALERT")
 	|| zlog_level_list_set(levels, "UNKNOWN = 254, LOG_ERR")
 	|| zlog_level_list_set(levels, "! = 255, LOG_INFO");
 }
+#endif
 
 zc_arraylist_t *zlog_level_list_new(void)
 {

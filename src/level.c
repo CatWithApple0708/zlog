@@ -79,7 +79,7 @@ zlog_level_t *zlog_level_new(char *line)
 	memset(str, 0x00, sizeof(str));
 	memset(sl, 0x00, sizeof(sl));
 
-	nscan = sscanf(line, " %[^= \t] = %d ,%s", str, &l, sl);
+	nscan = sscanf(line, "%s = %d ,%s", str, &l, sl);
 	if (nscan < 2) {
 		zc_error("level[%s], syntax wrong", line);
 		return NULL;
@@ -116,9 +116,16 @@ zlog_level_t *zlog_level_new(char *line)
 	}
 
 	/* strncpy and toupper(str)  */
+	#if 0
 	for (i = 0; (i < sizeof(a_level->str_uppercase) - 1) && str[i] != '\0'; i++) {
 		(a_level->str_uppercase)[i] = toupper(str[i]);
 		(a_level->str_lowercase)[i] = tolower(str[i]);
+	}
+	#endif
+	strncpy(a_level->str_uppercase,str,sizeof(a_level->str_uppercase) - 1);
+	strncpy(a_level->str_lowercase,str,sizeof(a_level->str_lowercase) - 1);
+	for (i = 0; (i < sizeof(a_level->str_uppercase) - 1) && str[i] != '\0'; i++) {
+
 	}
 
 	if (str[i] != '\0') {
